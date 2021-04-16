@@ -1,0 +1,60 @@
+﻿@model DeltaReportSocViewModel
+@{
+    ViewData["Title"] = $"{Model.ReportTitle} | {Model.Soc} - {Model.SocTitle}";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">@Html.ActionLink("Delta reports", "Index", "DeltaReport")</li>
+        <li class="breadcrumb-item">@Html.ActionLink(Model.ReportTitle, "SocIndex", "DeltaReport", new { id = Model.DeltaReportId })</li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.Soc - @Model.SocTitle</li>
+    </ol>
+</nav>
+
+<div>
+    <h1>SOC: @Model.Soc - @Model.SocTitle</h1>
+    <h2>State: @Model.State.ToString()</h2>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Published job group (previous)</th>
+                <th scope="col">Draft job group (new)</th>
+                <th scope="col">Delta</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <pre id="tdPublished" class="formatted scrollContainer"></pre>
+                </td>
+                <td>
+                    <pre id="tdDraft" class="formatted scrollContainer"></pre>
+                </td>
+                <td>
+                    <pre id="tdDelta" class="formatted"></pre>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@section scripts {
+    <script>
+        var publishedText = JSON.stringify(@Html.Raw(Model.PublishedJobGroup ?? "{}"), null, 2); // "\t");
+        var draftText = JSON.stringify(@Html.Raw(Model.DraftJobGroup ?? "{}"), null, 2); // "\t");
+        var deltaText = JSON.stringify(@Html.Raw(Model.Delta ?? "{}"), null, 2); // "\t");
+
+        $('#tdPublished').text(publishedText);
+        $('#tdDraft').text(draftText);
+        $('#tdDelta').text(deltaText);
+
+        var publishedId = $('#tdPublished').attr('id');
+        var draftId = $('#tdDraft').attr('id');
+
+        $(document).jdd(publishedId, draftId);
+
+        $('.scrollContainer').scrollsync();
+
+    </script>
+}
