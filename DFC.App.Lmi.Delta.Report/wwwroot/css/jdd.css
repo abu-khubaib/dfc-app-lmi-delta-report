@@ -1,0 +1,22 @@
+﻿pre.formatted {
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    width: 400px;
+    height: 600px;
+    scroll-behavior: auto;
+}
+
+span.newElement {
+    background-color: greenyellow;
+    color: black;
+}
+
+span.updatedElement {
+    background-color: lightskyblue;
+    color: black;
+}
+
+span.removedElement {
+    background-color: lightpink;
+    color: black;
+}
