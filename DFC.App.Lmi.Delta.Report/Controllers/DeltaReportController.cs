@@ -14,19 +14,19 @@ namespace DFC.App.Lmi.Delta.Report.Controllers
     {
         private readonly ILogger<DeltaReportController> logger;
         private readonly IMapper mapper;
-        private readonly IDeltaReportApiConnector deltaReportApiConnector;
+        private readonly IDeltaReportService deltaReportService;
 
-        public DeltaReportController(ILogger<DeltaReportController> logger, IMapper mapper, IDeltaReportApiConnector deltaReportApiConnector)
+        public DeltaReportController(ILogger<DeltaReportController> logger, IMapper mapper, IDeltaReportService deltaReportService)
         {
             this.logger = logger;
             this.mapper = mapper;
-            this.deltaReportApiConnector = deltaReportApiConnector;
+            this.deltaReportService = deltaReportService;
         }
 
         // GET: DeltaReport
         public async Task<ActionResult> Index()
         {
-            var deltaReports = await deltaReportApiConnector.GetSummaryAsync().ConfigureAwait(false);
+            var deltaReports = await deltaReportService.GetSummaryAsync().ConfigureAwait(false);
             var viewModels = mapper.Map<List<DeltaReportSummaryItemViewModel>>(deltaReports);
 
             logger.LogInformation($"Retrieved {viewModels.Count} delta reports");
@@ -36,7 +36,7 @@ namespace DFC.App.Lmi.Delta.Report.Controllers
         // GET: DeltaReport/SocIndex/guid
         public async Task<ActionResult> SocIndex(Guid id)
         {
-            var deltaReport = await deltaReportApiConnector.GetDetailAsync(id).ConfigureAwait(false);
+            var deltaReport = await deltaReportService.GetDetailAsync(id).ConfigureAwait(false);
 
             if (deltaReport != null)
             {
@@ -53,7 +53,7 @@ namespace DFC.App.Lmi.Delta.Report.Controllers
         // GET: DeltaReport/Details/guid/soc
         public async Task<ActionResult> Details(Guid id, int soc)
         {
-            var deltaReport = await deltaReportApiConnector.GetDetailAsync(id).ConfigureAwait(false);
+            var deltaReport = await deltaReportService.GetDetailAsync(id).ConfigureAwait(false);
 
             if (deltaReport != null)
             {

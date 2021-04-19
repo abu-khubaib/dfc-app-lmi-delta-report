@@ -22,7 +22,7 @@ namespace DFC.App.Lmi.Delta.Report.UnitTests.ControllerTests
     {
         private readonly ILogger<DeltaReportController> fakeLogger = A.Fake<ILogger<DeltaReportController>>();
         private readonly IMapper fakeMapper = A.Fake<IMapper>();
-        private readonly IDeltaReportApiConnector fakeDeltaReportApiConnector = A.Fake<IDeltaReportApiConnector>();
+        private readonly IDeltaReportService fakeDeltaReportService = A.Fake<IDeltaReportService>();
 
         [Fact]
         public async Task DeltaReportControllerIndexHtmlReturnsSuccess()
@@ -32,14 +32,14 @@ namespace DFC.App.Lmi.Delta.Report.UnitTests.ControllerTests
             var expectedResults = A.CollectionOfFake<DeltaReportSummaryItemModel>(resultsCount);
             using var controller = BuildPagesController();
 
-            A.CallTo(() => fakeDeltaReportApiConnector.GetSummaryAsync()).Returns(expectedResults);
+            A.CallTo(() => fakeDeltaReportService.GetSummaryAsync()).Returns(expectedResults);
             A.CallTo(() => fakeMapper.Map<List<DeltaReportSummaryItemViewModel>>(A<List<DeltaReportSummaryItemModel>>.Ignored)).Returns(A.Fake<List<DeltaReportSummaryItemViewModel>>());
 
             // Act
             var result = await controller.Index().ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => fakeDeltaReportApiConnector.GetSummaryAsync()).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeDeltaReportService.GetSummaryAsync()).MustHaveHappenedOnceExactly();
             A.CallTo(() => fakeMapper.Map<List<DeltaReportSummaryItemViewModel>>(A<List<DeltaReportSummaryItemModel>>.Ignored)).MustHaveHappenedOnceExactly();
 
             var viewResult = Assert.IsType<ViewResult>(result);
@@ -64,14 +64,14 @@ namespace DFC.App.Lmi.Delta.Report.UnitTests.ControllerTests
                 SocDeletionCount = 3,
             };
 
-            A.CallTo(() => fakeDeltaReportApiConnector.GetDetailAsync(A<Guid>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => fakeDeltaReportService.GetDetailAsync(A<Guid>.Ignored)).Returns(expectedResult);
             A.CallTo(() => fakeMapper.Map<DeltaReportViewModel>(A<DeltaReportModel>.Ignored)).Returns(expectedViewModel);
 
             // Act
             var result = await controller.SocIndex(expectedViewModel.Id.Value).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => fakeDeltaReportApiConnector.GetDetailAsync(A<Guid>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeDeltaReportService.GetDetailAsync(A<Guid>.Ignored)).MustHaveHappenedOnceExactly();
             A.CallTo(() => fakeMapper.Map<DeltaReportViewModel>(A<DeltaReportModel>.Ignored)).MustHaveHappenedOnceExactly();
 
             var viewResult = Assert.IsType<ViewResult>(result);
@@ -88,13 +88,13 @@ namespace DFC.App.Lmi.Delta.Report.UnitTests.ControllerTests
             DeltaReportModel? nullResult = null;
             using var controller = BuildPagesController();
 
-            A.CallTo(() => fakeDeltaReportApiConnector.GetDetailAsync(A<Guid>.Ignored)).Returns(nullResult);
+            A.CallTo(() => fakeDeltaReportService.GetDetailAsync(A<Guid>.Ignored)).Returns(nullResult);
 
             // Act
             var result = await controller.SocIndex(Guid.NewGuid()).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => fakeDeltaReportApiConnector.GetDetailAsync(A<Guid>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeDeltaReportService.GetDetailAsync(A<Guid>.Ignored)).MustHaveHappenedOnceExactly();
             A.CallTo(() => fakeMapper.Map<DeltaReportViewModel>(A<DeltaReportModel>.Ignored)).MustNotHaveHappened();
 
             var statusCodeResult = Assert.IsType<NotFoundResult>(result);
@@ -116,14 +116,14 @@ namespace DFC.App.Lmi.Delta.Report.UnitTests.ControllerTests
             };
             expectedResult.DeltaReportSocs = new List<DeltaReportSocModel> { new DeltaReportSocModel { Soc = expectedViewModel.Soc } };
 
-            A.CallTo(() => fakeDeltaReportApiConnector.GetDetailAsync(A<Guid>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => fakeDeltaReportService.GetDetailAsync(A<Guid>.Ignored)).Returns(expectedResult);
             A.CallTo(() => fakeMapper.Map<DeltaReportSocViewModel>(A<DeltaReportSocModel>.Ignored)).Returns(expectedViewModel);
 
             // Act
             var result = await controller.Details(expectedViewModel.DeltaReportId.Value, expectedViewModel.Soc).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => fakeDeltaReportApiConnector.GetDetailAsync(A<Guid>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeDeltaReportService.GetDetailAsync(A<Guid>.Ignored)).MustHaveHappenedOnceExactly();
             A.CallTo(() => fakeMapper.Map<DeltaReportSocViewModel>(A<DeltaReportSocModel>.Ignored)).MustHaveHappenedOnceExactly();
 
             var viewResult = Assert.IsType<ViewResult>(result);
@@ -140,13 +140,13 @@ namespace DFC.App.Lmi.Delta.Report.UnitTests.ControllerTests
             DeltaReportModel? nullResult = null;
             using var controller = BuildPagesController();
 
-            A.CallTo(() => fakeDeltaReportApiConnector.GetDetailAsync(A<Guid>.Ignored)).Returns(nullResult);
+            A.CallTo(() => fakeDeltaReportService.GetDetailAsync(A<Guid>.Ignored)).Returns(nullResult);
 
             // Act
             var result = await controller.Details(Guid.NewGuid(), 1234).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => fakeDeltaReportApiConnector.GetDetailAsync(A<Guid>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeDeltaReportService.GetDetailAsync(A<Guid>.Ignored)).MustHaveHappenedOnceExactly();
             A.CallTo(() => fakeMapper.Map<DeltaReportSocViewModel>(A<DeltaReportSocModel>.Ignored)).MustNotHaveHappened();
 
             var statusCodeResult = Assert.IsType<NotFoundResult>(result);
@@ -159,7 +159,7 @@ namespace DFC.App.Lmi.Delta.Report.UnitTests.ControllerTests
 
             httpContext.Request.Headers[HeaderNames.Accept] = MediaTypeNames.Text.Html;
 
-            var controller = new DeltaReportController(fakeLogger, fakeMapper, fakeDeltaReportApiConnector)
+            var controller = new DeltaReportController(fakeLogger, fakeMapper, fakeDeltaReportService)
             {
                 ControllerContext = new ControllerContext()
                 {
