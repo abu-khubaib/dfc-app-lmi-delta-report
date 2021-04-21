@@ -17,8 +17,6 @@ namespace DFC.App.Lmi.Delta.Report.ViewModels
 
         public DeltaReportState State { get; set; }
 
-        public string? Delta { get; set; }
-
         public string? DraftJobGroup { get; set; }
 
         public string? PublishedJobGroup { get; set; }
