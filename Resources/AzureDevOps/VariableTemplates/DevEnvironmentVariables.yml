@@ -1,0 +1,9 @@
+variables:
+  - name: aspTier
+    value: Standard
+  - name: aspInstances
+    value: 2
+  - name: aspSize
+    value: 2
+  - name: DeltaReportApiClientOptionsBaseAddress
+    value: https://dfc-dev-draft-api-lmi-delta-report-fa.$(appServiceDomain)/delta-reports/
