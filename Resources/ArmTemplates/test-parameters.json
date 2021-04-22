@@ -14,6 +14,12 @@
         "aspSize": {
             "value": "2"
         },
+        "Environment": {
+            "value": "FOO"
+        },
+        "enableAlerts": {
+            "value": false
+        },
         "DeltaReportApiClientOptionsBaseAddress": {
             "value": "DeltaReportApiClientOptionsBaseAddress"
         }
