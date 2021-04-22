@@ -3,6 +3,8 @@ variables:
     value: DEV
   - name: WebAppPrefix
     value: dfc-dev-app-lmi-delta-report
+  - name: EnableAzureMonitorAlerting
+    value: true
   - name: ResourceGroup
     value: $(WebAppPrefix)-rg
   - name: aspTier
