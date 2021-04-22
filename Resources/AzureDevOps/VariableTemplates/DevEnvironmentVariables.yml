@@ -1,6 +1,10 @@
 variables:
   - name: ReleaseEnvironmentName
     value: DEV
+  - name: WebAppPrefix
+    value: dfc-dev-app-lmi-delta-report
+  - name: ResourceGroup
+    value: $(WebAppPrefix)-rg
   - name: aspTier
     value: Standard
   - name: aspInstances
