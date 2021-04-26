@@ -1,7 +1,7 @@
 variables:
   - name: ReleaseEnvironmentName
     value: DEV
-  - name: WebAppPrefix
+  - name: AppServiceName
     value: dfc-dev-app-lmi-delta-report
   - name: EnableAzureMonitorAlerting
     value: true

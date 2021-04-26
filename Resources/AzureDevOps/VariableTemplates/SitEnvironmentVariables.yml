@@ -1,7 +1,7 @@
 variables:
   - name: ReleaseEnvironmentName
     value: SIT
-  - name: WebAppPrefix
+  - name: AppServiceName
     value: dfc-sit-app-lmi-delta-report
   - name: EnableAzureMonitorAlerting
     value: true
