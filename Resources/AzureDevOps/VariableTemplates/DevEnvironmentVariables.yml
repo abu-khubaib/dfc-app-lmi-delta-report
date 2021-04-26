@@ -6,7 +6,7 @@ variables:
   - name: EnableAzureMonitorAlerting
     value: true
   - name: ResourceGroup
-    value: $(WebAppPrefix)-rg
+    value: $(AppServiceName)-rg
   - name: aspTier
     value: Standard
   - name: aspInstances
