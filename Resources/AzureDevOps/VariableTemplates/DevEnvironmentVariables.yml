@@ -1,12 +1,14 @@
 variables:
   - name: ReleaseEnvironmentName
     value: DEV
-  - name: AppServiceName
+  - name: resourcePrefix
     value: dfc-dev-app-lmi-delta-report
+  - name: appServiceName
+    value: $(resourcePrefix)-as
+  - name: ResourceGroup
+    value: $(resourcePrefix)-rg
   - name: EnableAzureMonitorAlerting
     value: true
-  - name: ResourceGroup
-    value: $(AppServiceName)-rg
   - name: aspTier
     value: Standard
   - name: aspInstances
