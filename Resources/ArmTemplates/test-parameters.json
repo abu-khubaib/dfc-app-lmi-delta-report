@@ -14,6 +14,9 @@
         "aspSize": {
             "value": "2"
         },
+        "appSharedStorageAccountName": {
+            "value": "dfcdevappsharedstr"
+        },
         "Environment": {
             "value": "FOO"
         },

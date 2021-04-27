@@ -20,6 +20,9 @@
         "aspSize": {
             "value": "__aspSize__"
         },
+        "appSharedStorageAccountName": {
+            "value": "__appSharedStorageAccountName__"
+        },
         "enableAlerts": {
             "value": __EnableAzureMonitorAlerting__
         },
