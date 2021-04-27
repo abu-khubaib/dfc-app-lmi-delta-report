@@ -1,0 +1,30 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appSharedResourceGroup": {
+            "value": "dfc-dev-app-sharedresources-rg"
+        },
+        "aspInstances": {
+            "value": 2
+        },
+        "aspTier": {
+            "value": "Standard"
+        },
+        "aspSize": {
+            "value": "2"
+        },
+        "appSharedStorageAccountName": {
+            "value": "dfcdevappsharedstr"
+        },
+        "Environment": {
+            "value": "FOO"
+        },
+        "enableAlerts": {
+            "value": false
+        },
+        "DeltaReportApiClientOptionsBaseAddress": {
+            "value": "DeltaReportApiClientOptionsBaseAddress"
+        }
+    }
+}
