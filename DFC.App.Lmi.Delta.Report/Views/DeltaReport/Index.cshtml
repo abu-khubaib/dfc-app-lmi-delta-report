@@ -1,0 +1,56 @@
+﻿@model IEnumerable<DeltaReportSummaryItemViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Delta reports</li>
+    </ol>
+</nav>
+
+<div>
+    <h1 class="display-4">Delta reports</h1>
+
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Created</th>
+                <th scope="col">SOCs imported</th>
+                <th scope="col">SOCs unchanged</th>
+                <th scope="col">SOC additions</th>
+                <th scope="col">SOC updates</th>
+                <th scope="col">SOC deletions</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row">
+                        @Html.Raw(item.ReportTitle)
+                    </th>
+                    <td>
+                        @Html.Raw(item.SocImportedCount)
+                    </td>
+                    <td>
+                        @Html.Raw(item.SocUnchangedCount)
+                    </td>
+                    <td>
+                        @Html.Raw(item.SocAdditionCount)
+                    </td>
+                    <td>
+                        @Html.Raw(item.SocUpdateCount)
+                    </td>
+                    <td>
+                        @Html.Raw(item.SocDeletionCount)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "SocIndex", "DeltaReport", new { id = item.Id }, new { @class = "btn btn-info btn-xs" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

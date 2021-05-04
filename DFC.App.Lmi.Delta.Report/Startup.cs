@@ -1,18 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
+using DFC.App.Lmi.Delta.Report.Connectors;
+using DFC.App.Lmi.Delta.Report.Contracts;
+using DFC.App.Lmi.Delta.Report.Extensions;
+using DFC.App.Lmi.Delta.Report.HttpClientPolicies;
+using DFC.App.Lmi.Delta.Report.Models;
+using DFC.App.Lmi.Delta.Report.Models.ClientOptions;
+using DFC.App.Lmi.Delta.Report.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DFC.App.Lmi.Delta.Report
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
+        private const string AppSettingsPolicies = "Policies";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -24,6 +31,21 @@ namespace DFC.App.Lmi.Delta.Report
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddAutoMapper(typeof(Startup).Assembly);
+            services.AddHttpClient();
+            services.AddTransient<IApiConnector, ApiConnector>();
+            services.AddTransient<IApiDataConnector, ApiDataConnector>();
+            services.AddTransient<IDeltaReportService, DeltaReportService>();
+            services.AddSingleton(new CachedDeltaReportModel());
+
+            var policyOptions = Configuration.GetSection(AppSettingsPolicies).Get<PolicyOptions>() ?? new PolicyOptions();
+            var policyRegistry = services.AddPolicyRegistry();
+
+            services.AddSingleton(Configuration.GetSection(nameof(DeltaReportApiClientOptions)).Get<DeltaReportApiClientOptions>() ?? new DeltaReportApiClientOptions());
+
+            services
+                .AddPolicies(policyRegistry, nameof(DeltaReportApiClientOptions), policyOptions)
+                .AddHttpClient<IDeltaReportApiConnector, DeltaReportApiConnector, DeltaReportApiClientOptions>(nameof(DeltaReportApiClientOptions), nameof(PolicyOptions.HttpRetry), nameof(PolicyOptions.HttpCircuitBreaker));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,9 +58,9 @@ namespace DFC.App.Lmi.Delta.Report
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -50,7 +72,7 @@ namespace DFC.App.Lmi.Delta.Report
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=DeltaReport}/{action=Index}/{id?}");
             });
         }
     }

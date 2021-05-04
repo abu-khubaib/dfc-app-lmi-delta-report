@@ -1,0 +1,67 @@
+﻿@model DeltaReportViewModel
+@{
+    ViewData["Title"] = Model.ReportTitle;
+
+    var unchangedSocs = Model.DeltaReportSocsForState(DFC.App.Lmi.Delta.Report.Common.DeltaReportState.Unchanged);
+    var additionalSocs = Model.DeltaReportSocsForState(DFC.App.Lmi.Delta.Report.Common.DeltaReportState.Addition);
+    var updatedSocs = Model.DeltaReportSocsForState(DFC.App.Lmi.Delta.Report.Common.DeltaReportState.Updated);
+    var deletedSocs = Model.DeltaReportSocsForState(DFC.App.Lmi.Delta.Report.Common.DeltaReportState.Deletion);
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">@Html.ActionLink("Delta reports", "Index", "DeltaReport")</li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.ReportTitle</li>
+    </ol>
+</nav>
+
+<div>
+    <h1>Delta report for: @Html.Raw(@Model.ReportTitle)</h1>
+
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Unchanged (@Model.SocUnchangedCount)</th>
+                <th>Additions (@Model.SocAdditionCount)</th>
+                <th>Updates (@Model.SocUpdateCount)</th>
+                <th>Deletions (@Model.SocDeletionCount)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <ul>
+                        @foreach (var unchangedSoc in unchangedSocs)
+                        {
+                            <li>@Html.ActionLink($"{unchangedSoc.Soc} - {unchangedSoc.SocTitle}", "Details", "DeltaReport", new { id = Model.Id, soc = unchangedSoc.Soc})</li>
+                        }
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        @foreach (var additionalSoc in additionalSocs)
+                        {
+                            <li>@Html.ActionLink($"{additionalSoc.Soc} - {additionalSoc.SocTitle}", "Details", "DeltaReport", new { id = Model.Id, soc = additionalSoc.Soc })</li>
+                        }
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        @foreach (var updatedSoc in updatedSocs)
+                        {
+                            <li>@Html.ActionLink($"{updatedSoc.Soc} - {updatedSoc.SocTitle}", "Details", "DeltaReport", new { id = Model.Id, soc = updatedSoc.Soc })</li>
+                        }
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        @foreach (var deletedSoc in deletedSocs)
+                        {
+                            <li>@Html.ActionLink($"{deletedSoc.Soc} - {deletedSoc.SocTitle}", "Details", "DeltaReport", new { id = Model.Id, soc = deletedSoc.Soc })</li>
+                        }
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
