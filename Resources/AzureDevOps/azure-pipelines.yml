@@ -78,7 +78,8 @@ stages:
       AppServiceName: '$(AppServiceName)'
 
 - stage: DeployToDev
-  condition: succeeded()
+  dependsOn: Build
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
   displayName: Deploy to Dev
   variables:
   - group: dfc-shared-all
