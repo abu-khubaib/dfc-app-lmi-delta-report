@@ -1,0 +1,19 @@
+variables:
+  - name: ReleaseEnvironmentName
+    value: LAB
+  - name: resourcePrefix
+    value: dfc-lab-app-lmi-delta-report
+  - name: appServiceName
+    value: $(resourcePrefix)-as
+  - name: ResourceGroup
+    value: $(resourcePrefix)-rg
+  - name: EnableAzureMonitorAlerting
+    value: true
+  - name: aspTier
+    value: Standard
+  - name: aspInstances
+    value: 2
+  - name: aspSize
+    value: 2
+  - name: DeltaReportApiClientOptionsBaseAddress
+    value: https://dfc-lab-draft-api-lmi-delta-report-fa.$(appServiceDomain)/delta-reports/
