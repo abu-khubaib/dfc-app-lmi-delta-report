@@ -16,4 +16,4 @@ variables:
   - name: aspSize
     value: 2
   - name: DeltaReportApiClientOptionsBaseAddress
-    value: https://dfc-pp-draft-api-lmi-delta-report-fa.$(appServiceDomain)/delta-reports/
+    value: https://dfc-pp-api-lmi-delta-report-fa.$(appServiceDomain)/delta-reports/
