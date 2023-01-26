@@ -10,6 +10,7 @@ resources:
   - repository: dfc-devops
     type: github
     name: SkillsFundingAgency/dfc-devops
+    ref: lab_pipeline
     endpoint: 'GitHub (ESFA)'
 
 pool:
@@ -50,6 +51,7 @@ stages:
         DotNetCoreVersion: '3.1.100'
         PublishWebApp: true
         TestSuffix: UnitTests
+
 
 - stage: DeployToLab
   condition: succeeded()
